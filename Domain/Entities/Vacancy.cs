@@ -18,9 +18,7 @@ namespace JobList.Domain.Entities
         public int CityId { get; set; }
         public int WorkAreaId { get; set; }
 
-        public City City { get; set; }
         public Recruiter Recruiter { get; set; }
-        public WorkArea WorkArea { get; set; }
         
         public ICollection<Invitation> Invitations { get; set; }
     }

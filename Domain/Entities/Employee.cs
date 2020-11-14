@@ -9,6 +9,7 @@ namespace JobList.Domain.Entities
         public Employee()
         {
             Invitations = new HashSet<Invitation>();
+            Resumes = new HashSet<Resume>();
         }
 
         public int Id { get; set; }
@@ -24,10 +25,7 @@ namespace JobList.Domain.Entities
         public int RoleId { get; set; }
         public int CityId { get; set; }
         
-        public City City { get; set; }
-        public Role Role { get; set; }
-        public Resume Resumes { get; set; }
-
+        public ICollection<Resume> Resumes { get; set; }
         public ICollection<Invitation> Invitations { get; set; }
     }
 }

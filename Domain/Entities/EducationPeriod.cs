@@ -12,7 +12,5 @@ namespace JobList.Domain.Entities
         public int FacultyId { get; set; }        
 
         public Resume Resume { get; set; }
-        public School School { get; set; }
-        public Faculty Faculty { get; set; }
     }
 }

@@ -22,7 +22,6 @@ namespace JobList.Domain.Entities
         public int RoleId { get; set; }
 
         public Company Company { get; set; }
-        public Role Role { get; set; }
 
         public ICollection<Vacancy> Vacancies { get; set; }
     }

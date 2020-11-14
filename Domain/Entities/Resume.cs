@@ -25,9 +25,9 @@ namespace JobList.Domain.Entities
         public string KeySkills { get; set; }
         public string Courses { get; set; }
         public int WorkAreaId { get; set; }
+        public int EmployeeId { get; set; }
 
         public Employee Employee { get; set; }
-        public WorkArea WorkArea { get; set; }
 
         public ICollection<EducationPeriod> EducationPeriods { get; }
         public ICollection<Experience> Experiences { get; }
