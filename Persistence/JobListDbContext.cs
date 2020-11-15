@@ -10,9 +10,20 @@ namespace JobList.Persistence
 {
     public class JobListDbContext : DbContext, IJobListDbContext
     {
+        private readonly ICurrentUserService _currentUserService;
+
         public JobListDbContext(DbContextOptions<JobListDbContext> options)
             : base(options)
         {
+        }
+
+        public JobListDbContext(
+            DbContextOptions<JobListDbContext> options,
+            ICurrentUserService currentUserService)
+            : base(options)
+        
+        {
+            _currentUserService = currentUserService;
         }
 
         public DbSet<City> Cities { get; set; }
@@ -38,13 +49,11 @@ namespace JobList.Persistence
                 switch (entry.State)
                 {
                     case EntityState.Added:
-                        //TODO: Replace with current user
-                        entry.Entity.CreatedBy = "bohdan tron";
+                        entry.Entity.CreatedBy = _currentUserService.UserId;
                         entry.Entity.CreatedDate = DateTime.UtcNow;
                         break;
                     case EntityState.Modified:
-                        //TODO: Replace with current user
-                        entry.Entity.ModifiedBy = "bohdan tron";
+                        entry.Entity.ModifiedBy = _currentUserService.UserId;
                         entry.Entity.ModifiedDate = DateTime.UtcNow;
                         break;
                 }
