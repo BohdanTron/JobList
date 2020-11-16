@@ -8,9 +8,6 @@ namespace JobList.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<Language> builder)
         {
-            builder.Property(e => e.Id)
-                .ValueGeneratedNever();
-
             builder.HasIndex(e => e.Name)
                 .HasName("UQ_Languages_Name")
                 .IsUnique();

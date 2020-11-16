@@ -12,9 +12,6 @@ namespace JobList.Persistence.Configurations
                 .HasName("UQ_Faculties_Name")
                 .IsUnique();
 
-            builder.Property(e => e.Id)
-                .ValueGeneratedNever();
-
             builder.Property(e => e.Name)
                 .IsRequired()
                 .HasMaxLength(200);

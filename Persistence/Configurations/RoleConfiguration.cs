@@ -8,11 +8,9 @@ namespace JobList.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<Role> builder)
         {
-            builder.Property(e => e.Id)
-                .ValueGeneratedNever();
-
             builder.HasIndex(e => e.Name)
-                    .IsUnique();
+                .HasName("UQ_Roles_Name")
+                .IsUnique();
 
             builder.Property(e => e.Name)
                 .IsRequired()

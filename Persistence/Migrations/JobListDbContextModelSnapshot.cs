@@ -22,7 +22,9 @@ namespace JobList.Persistence.Migrations
             modelBuilder.Entity("JobList.Domain.Entities.City", b =>
                 {
                     b.Property<int>("Id")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -263,7 +265,9 @@ namespace JobList.Persistence.Migrations
             modelBuilder.Entity("JobList.Domain.Entities.Faculty", b =>
                 {
                     b.Property<int>("Id")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -304,7 +308,9 @@ namespace JobList.Persistence.Migrations
             modelBuilder.Entity("JobList.Domain.Entities.Language", b =>
                 {
                     b.Property<int>("Id")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -491,7 +497,9 @@ namespace JobList.Persistence.Migrations
             modelBuilder.Entity("JobList.Domain.Entities.Role", b =>
                 {
                     b.Property<int>("Id")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -501,7 +509,8 @@ namespace JobList.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("Name")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasName("UQ_Roles_Name");
 
                     b.ToTable("Roles");
                 });
@@ -509,7 +518,9 @@ namespace JobList.Persistence.Migrations
             modelBuilder.Entity("JobList.Domain.Entities.School", b =>
                 {
                     b.Property<int>("Id")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -519,7 +530,8 @@ namespace JobList.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("Name")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasName("UQ_Schools_Name");
 
                     b.ToTable("Schools");
                 });
@@ -592,7 +604,9 @@ namespace JobList.Persistence.Migrations
             modelBuilder.Entity("JobList.Domain.Entities.WorkArea", b =>
                 {
                     b.Property<int>("Id")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -600,6 +614,10 @@ namespace JobList.Persistence.Migrations
                         .HasMaxLength(100);
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique()
+                        .HasName("UQ_WorkAreas_Name");
 
                     b.ToTable("WorkAreas");
                 });

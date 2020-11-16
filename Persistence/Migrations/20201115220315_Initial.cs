@@ -11,7 +11,8 @@ namespace JobList.Persistence.Migrations
                 name: "Cities",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(maxLength: 100, nullable: false)
                 },
                 constraints: table =>
@@ -78,7 +79,8 @@ namespace JobList.Persistence.Migrations
                 name: "Faculties",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(maxLength: 200, nullable: false)
                 },
                 constraints: table =>
@@ -90,7 +92,8 @@ namespace JobList.Persistence.Migrations
                 name: "Languages",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(maxLength: 50, nullable: false)
                 },
                 constraints: table =>
@@ -102,7 +105,8 @@ namespace JobList.Persistence.Migrations
                 name: "Roles",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(maxLength: 20, nullable: false)
                 },
                 constraints: table =>
@@ -114,7 +118,8 @@ namespace JobList.Persistence.Migrations
                 name: "Schools",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(maxLength: 300, nullable: false)
                 },
                 constraints: table =>
@@ -126,12 +131,44 @@ namespace JobList.Persistence.Migrations
                 name: "WorkAreas",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(maxLength: 100, nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_WorkAreas", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Recruiters",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CreatedBy = table.Column<string>(nullable: true),
+                    CreatedDate = table.Column<DateTime>(nullable: false),
+                    ModifiedBy = table.Column<string>(nullable: true),
+                    ModifiedDate = table.Column<DateTime>(nullable: true),
+                    FirstName = table.Column<string>(maxLength: 50, nullable: false),
+                    LastName = table.Column<string>(maxLength: 50, nullable: false),
+                    Phone = table.Column<string>(maxLength: 15, nullable: true),
+                    PhotoData = table.Column<byte[]>(nullable: true),
+                    PhotoMimetype = table.Column<string>(maxLength: 5, nullable: true),
+                    Email = table.Column<string>(maxLength: 255, nullable: false),
+                    Password = table.Column<string>(maxLength: 100, nullable: false),
+                    CompanyId = table.Column<int>(nullable: false),
+                    RoleId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Recruiters", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Recruiters_Companies",
+                        column: x => x.CompanyId,
+                        principalTable: "Companies",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -170,7 +207,7 @@ namespace JobList.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Recruiters",
+                name: "Vacancies",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -179,29 +216,25 @@ namespace JobList.Persistence.Migrations
                     CreatedDate = table.Column<DateTime>(nullable: false),
                     ModifiedBy = table.Column<string>(nullable: true),
                     ModifiedDate = table.Column<DateTime>(nullable: true),
-                    FirstName = table.Column<string>(maxLength: 50, nullable: false),
-                    LastName = table.Column<string>(maxLength: 50, nullable: false),
-                    Phone = table.Column<string>(maxLength: 15, nullable: true),
-                    PhotoData = table.Column<byte[]>(nullable: true),
-                    PhotoMimetype = table.Column<string>(maxLength: 5, nullable: true),
-                    Email = table.Column<string>(maxLength: 255, nullable: false),
-                    Password = table.Column<string>(maxLength: 100, nullable: false),
-                    CompanyId = table.Column<int>(nullable: false),
-                    RoleId = table.Column<int>(nullable: false)
+                    Name = table.Column<string>(maxLength: 200, nullable: false),
+                    Description = table.Column<string>(nullable: false),
+                    Offering = table.Column<string>(nullable: false),
+                    Requirements = table.Column<string>(nullable: false),
+                    BePlus = table.Column<string>(nullable: true),
+                    IsChecked = table.Column<bool>(nullable: true),
+                    Salary = table.Column<decimal>(type: "money", nullable: true),
+                    FullPartTime = table.Column<string>(maxLength: 25, nullable: true),
+                    RecruiterId = table.Column<int>(nullable: false),
+                    CityId = table.Column<int>(nullable: false),
+                    WorkAreaId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Recruiters", x => x.Id);
+                    table.PrimaryKey("PK_Vacancies", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Recruiters_Companies",
-                        column: x => x.CompanyId,
-                        principalTable: "Companies",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Recruiters_Roles_RoleId",
-                        column: x => x.RoleId,
-                        principalTable: "Roles",
+                        name: "FK_Vacancies_Recruiters",
+                        column: x => x.RecruiterId,
+                        principalTable: "Recruiters",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -265,60 +298,9 @@ namespace JobList.Persistence.Migrations
                 {
                     table.PrimaryKey("PK_ResumeLanguages", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ResumeLanguages_Languages_LanguageId",
-                        column: x => x.LanguageId,
-                        principalTable: "Languages",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
                         name: "FK_ResumeLanguages_Resumes",
                         column: x => x.ResumeId,
                         principalTable: "Resumes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Vacancies",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    CreatedBy = table.Column<string>(nullable: true),
-                    CreatedDate = table.Column<DateTime>(nullable: false),
-                    ModifiedBy = table.Column<string>(nullable: true),
-                    ModifiedDate = table.Column<DateTime>(nullable: true),
-                    Name = table.Column<string>(maxLength: 200, nullable: false),
-                    Description = table.Column<string>(nullable: false),
-                    Offering = table.Column<string>(nullable: false),
-                    Requirements = table.Column<string>(nullable: false),
-                    BePlus = table.Column<string>(nullable: true),
-                    IsChecked = table.Column<bool>(nullable: true),
-                    Salary = table.Column<decimal>(type: "money", nullable: true),
-                    FullPartTime = table.Column<string>(maxLength: 25, nullable: true),
-                    RecruiterId = table.Column<int>(nullable: false),
-                    CityId = table.Column<int>(nullable: false),
-                    WorkAreaId = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Vacancies", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Vacancies_Cities_CityId",
-                        column: x => x.CityId,
-                        principalTable: "Cities",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Vacancies_Recruiters",
-                        column: x => x.RecruiterId,
-                        principalTable: "Recruiters",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Vacancies_WorkAreas_WorkAreaId",
-                        column: x => x.WorkAreaId,
-                        principalTable: "WorkAreas",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -431,16 +413,6 @@ namespace JobList.Persistence.Migrations
                 filter: "[Phone] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Recruiters_RoleId",
-                table: "Recruiters",
-                column: "RoleId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ResumeLanguages_LanguageId",
-                table: "ResumeLanguages",
-                column: "LanguageId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_ResumeLanguages_ResumeId",
                 table: "ResumeLanguages",
                 column: "ResumeId");
@@ -463,23 +435,16 @@ namespace JobList.Persistence.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Vacancies_CityId",
-                table: "Vacancies",
-                column: "CityId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Vacancies_RecruiterId",
                 table: "Vacancies",
                 column: "RecruiterId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Vacancies_WorkAreaId",
-                table: "Vacancies",
-                column: "WorkAreaId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Cities");
+
             migrationBuilder.DropTable(
                 name: "EducationPeriods");
 
@@ -493,37 +458,34 @@ namespace JobList.Persistence.Migrations
                 name: "Invitations");
 
             migrationBuilder.DropTable(
+                name: "Languages");
+
+            migrationBuilder.DropTable(
                 name: "ResumeLanguages");
+
+            migrationBuilder.DropTable(
+                name: "Roles");
 
             migrationBuilder.DropTable(
                 name: "Schools");
 
             migrationBuilder.DropTable(
-                name: "Vacancies");
+                name: "WorkAreas");
 
             migrationBuilder.DropTable(
-                name: "Languages");
+                name: "Vacancies");
 
             migrationBuilder.DropTable(
                 name: "Resumes");
 
             migrationBuilder.DropTable(
-                name: "Cities");
-
-            migrationBuilder.DropTable(
                 name: "Recruiters");
-
-            migrationBuilder.DropTable(
-                name: "WorkAreas");
 
             migrationBuilder.DropTable(
                 name: "Employees");
 
             migrationBuilder.DropTable(
                 name: "Companies");
-
-            migrationBuilder.DropTable(
-                name: "Roles");
         }
     }
 }

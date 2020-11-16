@@ -1,5 +1,7 @@
 ﻿using JobList.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace JobList.Application.Common.Interfaces
 {
@@ -20,5 +22,7 @@ namespace JobList.Application.Common.Interfaces
         DbSet<School> Schools { get; set; }
         DbSet<Vacancy> Vacancies { get; set; }
         DbSet<WorkArea> WorkAreas { get; set; }
+
+        Task<int> SaveChangesAsync(CancellationToken cancellatinoToken);
     }
 }

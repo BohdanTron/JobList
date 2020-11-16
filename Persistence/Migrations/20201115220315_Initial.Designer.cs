@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace JobList.Persistence.Migrations
 {
     [DbContext(typeof(JobListDbContext))]
-    [Migration("20201114224259_Initial")]
+    [Migration("20201115220315_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,7 +24,9 @@ namespace JobList.Persistence.Migrations
             modelBuilder.Entity("JobList.Domain.Entities.City", b =>
                 {
                     b.Property<int>("Id")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -265,7 +267,9 @@ namespace JobList.Persistence.Migrations
             modelBuilder.Entity("JobList.Domain.Entities.Faculty", b =>
                 {
                     b.Property<int>("Id")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -306,7 +310,9 @@ namespace JobList.Persistence.Migrations
             modelBuilder.Entity("JobList.Domain.Entities.Language", b =>
                 {
                     b.Property<int>("Id")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -390,8 +396,6 @@ namespace JobList.Persistence.Migrations
                         .IsUnique()
                         .HasName("UQ_Recruiters_Phone")
                         .HasFilter("[Phone] IS NOT NULL");
-
-                    b.HasIndex("RoleId");
 
                     b.ToTable("Recruiters");
                 });
@@ -487,8 +491,6 @@ namespace JobList.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("LanguageId");
-
                     b.HasIndex("ResumeId");
 
                     b.ToTable("ResumeLanguages");
@@ -497,7 +499,9 @@ namespace JobList.Persistence.Migrations
             modelBuilder.Entity("JobList.Domain.Entities.Role", b =>
                 {
                     b.Property<int>("Id")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -515,7 +519,9 @@ namespace JobList.Persistence.Migrations
             modelBuilder.Entity("JobList.Domain.Entities.School", b =>
                 {
                     b.Property<int>("Id")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -590,11 +596,7 @@ namespace JobList.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CityId");
-
                     b.HasIndex("RecruiterId");
-
-                    b.HasIndex("WorkAreaId");
 
                     b.ToTable("Vacancies");
                 });
@@ -602,7 +604,9 @@ namespace JobList.Persistence.Migrations
             modelBuilder.Entity("JobList.Domain.Entities.WorkArea", b =>
                 {
                     b.Property<int>("Id")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -659,12 +663,6 @@ namespace JobList.Persistence.Migrations
                         .HasConstraintName("FK_Recruiters_Companies")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("JobList.Domain.Entities.Role", "Role")
-                        .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("JobList.Domain.Entities.Resume", b =>
@@ -679,12 +677,6 @@ namespace JobList.Persistence.Migrations
 
             modelBuilder.Entity("JobList.Domain.Entities.ResumeLanguage", b =>
                 {
-                    b.HasOne("JobList.Domain.Entities.Language", "Language")
-                        .WithMany()
-                        .HasForeignKey("LanguageId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("JobList.Domain.Entities.Resume", "Resume")
                         .WithMany("ResumeLanguages")
                         .HasForeignKey("ResumeId")
@@ -695,22 +687,10 @@ namespace JobList.Persistence.Migrations
 
             modelBuilder.Entity("JobList.Domain.Entities.Vacancy", b =>
                 {
-                    b.HasOne("JobList.Domain.Entities.City", "City")
-                        .WithMany()
-                        .HasForeignKey("CityId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("JobList.Domain.Entities.Recruiter", "Recruiter")
                         .WithMany("Vacancies")
                         .HasForeignKey("RecruiterId")
                         .HasConstraintName("FK_Vacancies_Recruiters")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("JobList.Domain.Entities.WorkArea", "WorkArea")
-                        .WithMany()
-                        .HasForeignKey("WorkAreaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
