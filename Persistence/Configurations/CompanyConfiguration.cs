@@ -47,7 +47,7 @@ namespace JobList.Persistence.Configurations
                 .HasMaxLength(100);
 
             builder.Property(e => e.Phone)
-                .HasMaxLength(15);
+                .HasMaxLength(35);
 
             builder.Property(e => e.ShortDescription)
                 .IsRequired()

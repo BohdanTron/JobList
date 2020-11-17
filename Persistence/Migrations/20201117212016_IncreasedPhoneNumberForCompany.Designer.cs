@@ -4,14 +4,16 @@ using JobList.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace JobList.Persistence.Migrations
 {
     [DbContext(typeof(JobListDbContext))]
-    partial class JobListDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201117212016_IncreasedPhoneNumberForCompany")]
+    partial class IncreasedPhoneNumberForCompany
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -369,8 +371,8 @@ namespace JobList.Persistence.Migrations
                         .HasMaxLength(100);
 
                     b.Property<string>("Phone")
-                        .HasColumnType("nvarchar(35)")
-                        .HasMaxLength(35);
+                        .HasColumnType("nvarchar(15)")
+                        .HasMaxLength(15);
 
                     b.Property<byte[]>("PhotoData")
                         .HasColumnType("varbinary(max)");

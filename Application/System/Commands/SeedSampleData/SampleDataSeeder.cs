@@ -1,4 +1,5 @@
-﻿using JobList.Application.Common.Interfaces;
+﻿using Bogus;
+using JobList.Application.Common.Interfaces;
 using JobList.Domain.Entities;
 using System;
 using System.Linq;
@@ -253,6 +254,56 @@ namespace JobList.Application.System.Commands.SeedSampleData
             company.Recruiters.Add(recruiter);
 
             _context.Companies.Add(company);
+
+            var companyFaker = new Faker<Company>()
+                .RuleFor(o => o.Name, f => f.Company.CompanyName())
+                .RuleFor(o => o.BossName, f => f.Name.FirstName())
+                .RuleFor(o => o.FullDescription, f => f.Lorem.Sentence(3))
+                .RuleFor(o => o.ShortDescription, f => f.Lorem.Slug(1))
+                .RuleFor(o => o.Address, f => f.Address.FullAddress())
+                .RuleFor(o => o.Phone, f => f.Phone.PhoneNumber())
+                .RuleFor(o => o.Site, f => f.Internet.Url())
+                .RuleFor(o => o.Email, f => f.Internet.Email())
+                .RuleFor(o => o.Password, f => f.Internet.Password())
+                .RuleFor(o => o.RoleId, _context.Roles.First(x => x.Name == "company").Id);
+
+            var companies = companyFaker.Generate(25);
+
+            _context.Companies.AddRange(companies);
+
+            await _context.SaveChangesAsync(cancellationToken);
+
+            var recruiterFaker = new Faker<Recruiter>()
+                .RuleFor(o => o.FirstName, f => f.Name.FirstName())
+                .RuleFor(o => o.LastName, f => f.Name.LastName())
+                .RuleFor(o => o.Phone, f => f.Phone.PhoneNumber())
+                .RuleFor(o => o.Email, f => f.Internet.Email())
+                .RuleFor(o => o.Password, f => f.Internet.Password())
+                .RuleFor(o => o.CompanyId, f => f.PickRandom(companies).Id)
+                .RuleFor(o => o.RoleId, f => _context.Roles.First(x => x.Name == "company").Id);
+
+            var recruiters = recruiterFaker.Generate(20);
+
+            _context.Recruiters.AddRange(recruiters);
+
+            await _context.SaveChangesAsync(cancellationToken);
+
+            var vacancyFaker = new Faker<Vacancy>()
+                .RuleFor(o => o.Name, f => f.Name.JobTitle())
+                .RuleFor(o => o.Description, f => f.Name.JobDescriptor())
+                .RuleFor(o => o.Requirements, f => f.Lorem.Sentence())
+                .RuleFor(o => o.Offering, f => f.Lorem.Sentence())
+                .RuleFor(o => o.BePlus, f => f.Lorem.Sentence())
+                .RuleFor(o => o.IsChecked, f => f.PickRandom(true, false))
+                .RuleFor(o => o.Salary, f => f.PickRandom(1000))
+                .RuleFor(o => o.FullPartTime, f => f.PickRandom("Full-time", "Part-time"))
+                .RuleFor(o => o.RecruiterId, f => f.PickRandom(recruiters).Id)
+                .RuleFor(o => o.CityId, f => f.PickRandom(_context.Cities.Select(x => x.Id)).First())
+                .RuleFor(o => o.WorkAreaId, f => f.PickRandom(_context.WorkAreas.Select(x => x.Id)).First());
+
+            var vacancies = vacancyFaker.Generate(15);
+
+            _context.Vacancies.AddRange(vacancies);
 
             await _context.SaveChangesAsync(cancellationToken);
         }
