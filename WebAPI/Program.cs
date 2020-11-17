@@ -1,6 +1,8 @@
 using JobList.Application.System.Commands.SeedSampleData;
+using JobList.Persistence;
 using MediatR;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -22,6 +24,11 @@ namespace WebAPI
 
                 try
                 {
+                    var jobListDbContext = services.GetRequiredService<JobListDbContext>();
+
+                    jobListDbContext.Database.EnsureDeleted();
+                    jobListDbContext.Database.Migrate();
+
                     var mediator = services.GetRequiredService<IMediator>();
                     await mediator.Send(new SeedSampleDataCommand(), CancellationToken.None);
                 }

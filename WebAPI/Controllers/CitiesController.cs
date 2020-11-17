@@ -7,7 +7,7 @@ namespace WebAPI.Controllers
     [ApiController]
     public class CitiesController : JobListControllerBase
     {
-        [HttpGet("all")]
+        [HttpGet]
         public async Task<ActionResult<CitiesListVm>> GetAll()
         {
             return Ok(await Mediator.Send(new GetCitiesListQuery()));

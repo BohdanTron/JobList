@@ -7,7 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Common\Models\" />
+    <Folder Include="Resumes\" />
+    <Folder Include="Vacancies\" />
   </ItemGroup>
 
   <ItemGroup>
